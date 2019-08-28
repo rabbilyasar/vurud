@@ -1,8 +1,8 @@
 <template>
   <div id="vurud">
-    <!-- <p :class="{hidden: hasErrors}" class="text-center alert alert-danger">
+    <p :class="{hidden: hasErrors}" class="text-center alert alert-danger">
       Please fill all the fields
-    </p> -->
+    </p>
     <div class="container">
       <div class="form-group">
         <label for="name">Name</label>
@@ -36,11 +36,20 @@ export default {
   },
   methods: {
     createItem() {
-      const input = this.newItem
-      console.log(input);
+      let input = this.newItem
+      let vm = this
       
       if(input['name'] == '' ||input['age'] == ''||input['profession'] == '') {
-        this.hasErrors = false
+        this.hasErrors = false;
+      }
+      else {
+        this.hasErrors = true;
+        axios.post('/storeItem', input)
+          .then(res => {
+            vm.newItem = {'name': '', 'age': '', 'profession': ''}
+            vm.getItems();
+
+          })
       }
     }
   }

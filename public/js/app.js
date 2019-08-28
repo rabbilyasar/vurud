@@ -1911,10 +1911,20 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     createItem: function createItem() {
       var input = this.newItem;
-      console.log(input);
+      var vm = this;
 
       if (input['name'] == '' || input['age'] == '' || input['profession'] == '') {
         this.hasErrors = false;
+      } else {
+        this.hasErrors = true;
+        axios.post('/storeItem', input).then(function (res) {
+          vm.newItem = {
+            'name': '',
+            'age': '',
+            'profession': ''
+          };
+          vm.getItems();
+        });
       }
     }
   }
@@ -38029,6 +38039,15 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { attrs: { id: "vurud" } }, [
+    _c(
+      "p",
+      {
+        staticClass: "text-center alert alert-danger",
+        class: { hidden: _vm.hasErrors }
+      },
+      [_vm._v("\n    Please fill all the fields\n  ")]
+    ),
+    _vm._v(" "),
     _c("div", { staticClass: "container" }, [
       _c("div", { staticClass: "form-group" }, [
         _c("label", { attrs: { for: "name" } }, [_vm._v("Name")]),
